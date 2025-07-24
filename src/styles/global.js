@@ -50,6 +50,14 @@ export const globalStyles = StyleSheet.create({
     padding: 20, 
     marginBottom: 20,
     paddingVertical: 25
+  },
+  subTitulo: {
+    textAlign: 'center',
+    marginBottom: 20,
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginTop: 20
   }
     
 })

@@ -3,6 +3,7 @@ import { Text, TextInput, Button, HelperText, Surface } from "react-native-paper
 import { globalStyles } from "../styles/global"
 import { useState } from "react"
 import { useNavigation } from "@react-navigation/native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 //Apollo 
 import { gql, useMutation } from '@apollo/client'
@@ -51,11 +52,12 @@ export const Login = () => {
       })
       const {token} = data.authenticarUsuario
       //Guardar el token en AsyncSotrage
-      
+      await AsyncStorage.setItem('token', token)
+      //Redireccionar a las tarteas
+      navigation.navigate('Proyectos')
       
     } catch (error) {
       const { message} = error
-      console.log(message)
       setErrorGraphQL({estado: true, message: message.replace('GraphQL error: ', '')})
       setTimeout(() => setErrorGraphQL({estado: false, message: ''}), 4000)
     }
@@ -71,7 +73,7 @@ export const Login = () => {
     <TouchableWithoutFeedback
       onPress={() => ocultarTeclado()}
     >
-      <View style={[globalStyles.contenedor, {backgroundColor: '#e84347'}]}>
+      <View style={[globalStyles.contenedor, {backgroundColor: '#f04d50ff'}]}>
         <View style={[globalStyles.contenido, {alignContent: 'space-between'}]}>
           <Text 
             variant='headlineMedium'
