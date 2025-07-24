@@ -26,6 +26,7 @@ export const globalStyles = StyleSheet.create({
     input: {
         backgroundColor: '#fff',
         marginBottom: 8,
+        borderRadius: 10
     },
     button: {
         marginVertical: 10,
@@ -40,6 +41,15 @@ export const globalStyles = StyleSheet.create({
         textDecorationLine: 'underline',
         fontSize: 16,
         textTransform: 'uppercase'
-    }
+    },
+    surface: {
+    marginHorizontal: '5%', 
+    flex: 0, 
+    borderRadius: 15, 
+    backgroundColor: '#28303b', 
+    padding: 20, 
+    marginBottom: 20,
+    paddingVertical: 25
+  }
     
 })

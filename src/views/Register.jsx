@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native"
 import { globalStyles } from "../styles/global"
-import { Button, HelperText, Text, TextInput } from "react-native-paper"
+import { Button, HelperText, Surface, Text, TextInput } from "react-native-paper"
 
 //Apollo 
 import { gql, useMutation } from '@apollo/client'
@@ -23,6 +23,8 @@ export const Register = () => {
 
   //manejo de errores
   const [error, setError] = useState(false)
+  const [errorGraphQL, setErrorGraphQL] = useState({estado: false, message: ''})
+
   const hasErrorNombre = () => {
     return (form.nombre.length <= 3 && form.nombre.length > 0) ? true : false
   }
@@ -35,6 +37,7 @@ export const Register = () => {
 
   //State para mostrar/ocultar el password
   const [passVisible, setPassVisible] = useState(true)
+
   // react navigation
   const navigation = useNavigation()
 
@@ -56,7 +59,7 @@ export const Register = () => {
 
     //Guardar el usuario en la BD
     try {
-      const { data } = await crearUsuario({
+      await crearUsuario({
         variables: {
           input: {
             nombre: form.nombre,
@@ -65,9 +68,12 @@ export const Register = () => {
           }
         }
       })
-      console.log(data)
+      navigation.navigate('Login')
+
     } catch (error) {
-      console.log(error)
+      const { message} = error
+      setErrorGraphQL({estado: true, message: message.replace('GraphQL error: ', '')})
+      setTimeout(() => setErrorGraphQL({estado: false, message: ''}), 3000)
     }
   }
   
@@ -80,26 +86,40 @@ export const Register = () => {
     <TouchableWithoutFeedback
       onPress={() => ocultarTeclado()}
     >
-      <View style={[globalStyles.contenedor, {backgroundColor: '#e84347'}]}>
+      <View 
+        style={[globalStyles.contenedor, {backgroundColor: '#e84347'}]}
+      >
         <View style={[globalStyles.contenido, {flex:0}]}>
           <Text
-            variant='titleLarge'
-            style={[globalStyles.titulo, {marginBottom: 70, marginTop: 50}]}
+            variant='headlineMedium'
+            style={[globalStyles.titulo, {marginBottom: 50, marginTop: 50}]}
           >UpTask</Text>
-          <View style={[globalStyles.contenido, {marginHorizontal: '5%', flex: 0}]}>
+          <Surface 
+            style={[globalStyles.contenido, globalStyles.surface]}
+            elevation={5}
+            mode='elevated'
+          >
             <Text 
               variant='titleLarge' 
               style={globalStyles.titulo}
             >
               Crear Cuenta
             </Text>
+            {(errorGraphQL.estado) && <HelperText 
+              type="error"
+              visible={errorGraphQL.estado}
+              style={{textAlign: 'center', marginBottom: 12, fontWeight: 'bold', fontSize: 10, marginTop: -10, color: '#fff' }}
+            >
+            *{errorGraphQL.message}  
+            </HelperText>}
+
             {(error) && <HelperText 
               type="error"
               visible={error}
-              style={{textAlign: 'center', marginBottom: 10, fontWeight: 'bold', fontSize: 12, marginTop: -10, color: '#fff' }}
+              style={{textAlign: 'center', marginBottom: 12, fontWeight: 'bold', fontSize: 10, marginTop: -10, color: '#fff' }}
             >
             *Todos los campos son obligatorios  
-            </HelperText>}
+            </HelperText> }
 
             <TextInput
               label='Nombre'
@@ -107,6 +127,7 @@ export const Register = () => {
               style={[globalStyles.input]}
               textColor="#000"
               underlineColor='#000'
+              underlineStyle= {{marginHorizontal: 6}}
               activeUnderlineColor="#000"
               keyboardType='default'
               placeholder='Nombre de usuario'
@@ -115,7 +136,7 @@ export const Register = () => {
             {(hasErrorNombre) && <HelperText 
               type="error"
               visible={hasErrorNombre()}
-              style={{marginBottom: 10, fontWeight: 'bold', fontSize: 12, marginTop: -10, color: '#fff' }}
+              style={{marginBottom: 10, fontWeight: 'bold', fontSize: 10, marginTop: -10, color: '#fff' }}
             >
             *El nombre debe ser mayor a 3 caracteres  
             </HelperText>}
@@ -126,6 +147,7 @@ export const Register = () => {
               style={[globalStyles.input]}
               textColor="#000"
               underlineColor='#000'
+              underlineStyle= {{marginHorizontal: 6}}
               activeUnderlineColor="#000"
               keyboardType='email-address'
               placeholder='correo@correo.com'
@@ -134,7 +156,7 @@ export const Register = () => {
             {(hasErrorsEmail) && <HelperText 
               type="error"
               visible={hasErrorsEmail()}
-              style={{marginBottom: 10, fontWeight: 'bold', fontSize: 12, marginTop: -10, color: '#fff' }}
+              style={{marginBottom: 10, fontWeight: 'bold', fontSize: 10, marginTop: -10, color: '#fff' }}
             >
             *El email es invalido  
             </HelperText>}
@@ -145,6 +167,7 @@ export const Register = () => {
               style={globalStyles.input}
               textColor="#000"
               underlineColor="#000"
+              underlineStyle= {{marginHorizontal: 6}}
               activeUnderlineColor="#000"
               secureTextEntry={passVisible}
               keyboardType="default"
@@ -158,25 +181,26 @@ export const Register = () => {
             {(hasErrorPassword) && <HelperText 
               type="error"
               visible={hasErrorPassword()}
-              style={{marginBottom: 10, fontWeight: 'bold', fontSize: 12, marginTop: -10, color: '#fff' }}
+              style={{marginBottom: 10, fontWeight: 'bold', fontSize: 10, marginTop: -10, color: '#fff' }}
             >
             *El password debe tener al menos 6 caracteres  
             </HelperText>}
             <Button
               mode='contained'
-              buttonColor="#28303b"
+              buttonColor="#707070ff"
               textColor="#fff"
               labelStyle={{textTransform: 'uppercase', fontWeight: 'bold', fontSize: 16}}
               style={globalStyles.button}
-              rippleColor={"#2f363fff"}
+              rippleColor={"#5e5e5eff"}
               disabled={(hasErrorNombre() || hasErrorsEmail() || hasErrorPassword()) ? true : false }
               onPress={() => handleSubmit()}
             >Crear Cuenta</Button>
 
-          </View>
+          </Surface>
           
         </View>
       </View>
     </TouchableWithoutFeedback>
   )
 }
+
