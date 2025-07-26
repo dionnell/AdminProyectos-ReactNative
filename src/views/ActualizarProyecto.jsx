@@ -7,18 +7,18 @@ import { useState } from "react"
 //Apollo 
 import { gql, useMutation } from '@apollo/client'
 
-const CREAR_PROYECTO = gql`
-  mutation NuevoProyecto($input: ProyectoInput) {
-    nuevoProyecto(input: $input) {
-        nombre
-        id
+const ACTUALIZAR_PROYECTO = gql`
+  mutation ActualizarProyecto($actualizarProyectoId: ID!, $input: ProyectoInput) {
+    actualizarProyecto(id: $actualizarProyectoId, input: $input) {
+      id
+      nombre
     }
-  }
+}
 `
 
-export const NuevoProyecto = ({setVisible, refetch}) => {
+export const ActualizarProyecto = ({setVisibleAct, refetch, nombre, id}) => {
     //State del formulario
-    const [nombre, setNombre] = useState('')
+    const [nombreAct, setNombreAct] = useState(nombre)
 
     //manejo de errores
     const [error, setError] = useState({estado: false, message: ''})
@@ -30,7 +30,7 @@ export const NuevoProyecto = ({setVisible, refetch}) => {
     //const navigation = useNavigation()
     
     //Mutation de Apollo
-    const [ nuevoProyecto ] = useMutation( CREAR_PROYECTO)
+    const [ actualizarProyecto ] = useMutation( ACTUALIZAR_PROYECTO)
     
 
     const handleSubmit = async() => {
@@ -46,16 +46,17 @@ export const NuevoProyecto = ({setVisible, refetch}) => {
 
         //Guardar el proyecto en la BD
         try {
-          const {data} = await nuevoProyecto({
+          await actualizarProyecto({
             variables: {
+                actualizarProyectoId: id,
               input: {
-                nombre,
+                nombre: nombreAct,
               }
             }
           })
           //navigation.navigate('Proyectos')
 
-          setVisible(false)
+          setVisibleAct(false)
           refetch()//Refrescar la lista de proyectos
 
         } catch (error) {
@@ -85,7 +86,7 @@ export const NuevoProyecto = ({setVisible, refetch}) => {
                     <Text
                         variant='headlineMedium'
                         style={globalStyles.subTitulo}
-                    >Nuevo Proyecto</Text>
+                    >Actualizar nombre Proyecto</Text>
 
                     {(error.estado) && <HelperText
                           type="error"
@@ -114,7 +115,8 @@ export const NuevoProyecto = ({setVisible, refetch}) => {
                       underlineStyle= {{marginHorizontal: 6}}
                       keyboardType='default'
                       placeholder='Nombre'
-                      onChangeText={text => setNombre(text)}
+                      value={nombreAct}
+                      onChangeText={text => setNombreAct(text)}
                     />
                     <Button
                       mode='contained'
@@ -125,7 +127,7 @@ export const NuevoProyecto = ({setVisible, refetch}) => {
                       rippleColor={"#5e5e5eff"}
                       disabled={hasErrorNombre() ? true : false}
                       onPress={() =>handleSubmit()}
-                    >Crear Proyecto</Button>
+                    >Actualizar Proyecto</Button>
                 </Surface>
             </View>
 

@@ -43,21 +43,21 @@ export const globalStyles = StyleSheet.create({
         textTransform: 'uppercase'
     },
     surface: {
-    marginHorizontal: '5%', 
-    flex: 0, 
-    borderRadius: 15, 
-    backgroundColor: '#28303b', 
-    padding: 20, 
-    marginBottom: 20,
-    paddingVertical: 25
-  },
-  subTitulo: {
-    textAlign: 'center',
-    marginBottom: 20,
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginTop: 20
-  }
+        marginHorizontal: '5%', 
+        flex: 0, 
+        borderRadius: 15, 
+        backgroundColor: '#28303b', 
+        padding: 20, 
+        marginBottom: 20,
+        paddingVertical: 25
+    },
+    subTitulo: {
+      textAlign: 'center',
+      marginBottom: 20,
+      fontSize: 26,
+      fontWeight: 'bold',
+      color: '#fff',
+      marginTop: 20
+    }
     
 })

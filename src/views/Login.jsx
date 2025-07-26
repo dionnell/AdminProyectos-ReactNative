@@ -109,7 +109,8 @@ export const Login = () => {
               underlineStyle= {{marginHorizontal: 6}}
               keyboardType='email-address'
               placeholder='correo@correo.com'
-              onChangeText={text => setForm({...form, email: text})}
+              onChangeText={text => setForm({...form, email: text.toLowerCase()})}
+              value={form.email}
             />
             
             <TextInput

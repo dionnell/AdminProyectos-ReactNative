@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Login } from './src/views/Login';
 import { Register } from './src/views/Register';
 import { Proyectos } from './src/views/Proyectos';
-import { NuevoProyecto } from './src/views/NuevoProyecto';
+import { Proyecto } from './src/views/Proyecto';
 
 const Stack = createStackNavigator()
 
@@ -16,7 +16,7 @@ function App() {
       <PaperProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName='Login'
+            initialRouteName={'Login'}
           >
             <Stack.Screen
               name='Login'
@@ -58,19 +58,21 @@ function App() {
               }}
             />
             <Stack.Screen
-              name='NuevoProyecto'
-              component={NuevoProyecto}
-              options={{
-                title: 'Nuevo Proyecto',
+              name='Proyecto'
+              component={Proyecto}
+              options={({route}) => ({
+                title: route.params?.nombre || 'Proyecto',
                 headerStyle: {
                   backgroundColor: '#28303b'
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
+                  fontSize: 25,
+                  elevation: 5,
                 },
-                headerTitleAlign: 'center'
-              }}
+                headerTitleAlign: 'center',
+              })}
             />
           </Stack.Navigator>
         </NavigationContainer>
