@@ -7,8 +7,6 @@ export const globalStyles = StyleSheet.create({
     contenedorRow: {
         flexDirection: 'row', 
         flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        marginVertical: 2,
     },
     contenido: {
         flexDirection: 'column',
@@ -58,6 +56,31 @@ export const globalStyles = StyleSheet.create({
       fontWeight: 'bold',
       color: '#fff',
       marginTop: 20
-    }
+    },
+    itemLeft: {
+        flex: 0,
+        minWidth: '15%',
+        backgroundColor: '#ffffffff',
+        alignContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 5
+    },
+    itemCenter: {
+        flex: 1,
+        minWidth: '60%',
+        backgroundColor: '#ffffffff',
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 5
+    },
+    itemRigth: {
+        flex: 0,
+        minWidth: '15%',
+        backgroundColor: '#ffffffff',
+        alignContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 5
+    },
     
 })

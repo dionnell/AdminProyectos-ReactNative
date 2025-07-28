@@ -7,16 +7,18 @@ import { useState } from "react"
 //Apollo 
 import { gql, useMutation } from '@apollo/client'
 
-const ACTUALIZAR_PROYECTO = gql`
-  mutation ActualizarProyecto($actualizarProyectoId: ID!, $input: ProyectoInput) {
-    actualizarProyecto(id: $actualizarProyectoId, input: $input) {
-      id
-      nombre
+const ACTUALIZAR_TAREA = gql`
+    mutation actualizarTarea($actualizarTareaId: ID!, $input: TareaInput) {
+      actualizarTarea(id: $actualizarTareaId, input: $input) {
+        estado
+        id
+        nombre
+        proyecto
+      }
     }
-}
 `
 
-export const ActualizarProyecto = ({setVisibleAct, refetch, nombre, id}) => {
+export const ActualizarTarea = ({setVisibleAct, refetch, nombre, id, proyecto}) => {
     //State del formulario
     const [nombreAct, setNombreAct] = useState(nombre)
 
@@ -27,7 +29,7 @@ export const ActualizarProyecto = ({setVisibleAct, refetch, nombre, id}) => {
     }
 
     //Mutation de Apollo
-    const [ actualizarProyecto ] = useMutation( ACTUALIZAR_PROYECTO)
+    const [ actualizarTarea ] = useMutation( ACTUALIZAR_TAREA)
     
 
     const handleSubmit = async() => {
@@ -43,15 +45,15 @@ export const ActualizarProyecto = ({setVisibleAct, refetch, nombre, id}) => {
 
         //Guardar el proyecto en la BD
         try {
-          await actualizarProyecto({
+          await actualizarTarea({
             variables: {
-                actualizarProyectoId: id,
+                actualizarTareaId: id,
               input: {
                 nombre: nombreAct,
+                proyecto,
               }
             }
           })
-          //navigation.navigate('Proyectos')
 
           setVisibleAct(false)
           refetch()//Refrescar la lista de proyectos
@@ -83,7 +85,7 @@ export const ActualizarProyecto = ({setVisibleAct, refetch, nombre, id}) => {
                     <Text
                         variant='headlineMedium'
                         style={globalStyles.subTitulo}
-                    >Actualizar nombre Proyecto</Text>
+                    >Actualizar nombre de la Tarea: {nombre}</Text>
 
                     {(error.estado) && <HelperText
                           type="error"
@@ -103,7 +105,7 @@ export const ActualizarProyecto = ({setVisibleAct, refetch, nombre, id}) => {
                     }
 
                     <TextInput
-                      label='Nombre del Proyecto'
+                      label='Nuevo Nombre de la Tarea'
                       mode='flat'
                       style={[globalStyles.input, {marginBottom: 15}]}
                       textColor="#000"
@@ -124,7 +126,7 @@ export const ActualizarProyecto = ({setVisibleAct, refetch, nombre, id}) => {
                       rippleColor={"#5e5e5eff"}
                       disabled={hasErrorNombre() ? true : false}
                       onPress={() =>handleSubmit()}
-                    >Actualizar Proyecto</Button>
+                    >Actualizar Tarea</Button>
                 </Surface>
             </View>
 
@@ -132,3 +134,4 @@ export const ActualizarProyecto = ({setVisibleAct, refetch, nombre, id}) => {
     </TouchableWithoutFeedback>
   )
 }
+
