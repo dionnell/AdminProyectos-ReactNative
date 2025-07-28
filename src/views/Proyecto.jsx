@@ -107,7 +107,7 @@ export const Proyecto = ({route}) => {
 
     const confirmarEliminacion = (id) => {
         Alert.alert(
-          '¿Desea Eliminar esta Tarea?',
+          '¿Desea Eliminar esta Tarea ?',
           'Una vez eliminado no se puede recuperar',
           [
             {
@@ -128,8 +128,6 @@ export const Proyecto = ({route}) => {
                 } catch (error) {
                   console.log(error)
                 }
-                
-    
               }
             }
           ]
